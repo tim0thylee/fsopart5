@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,16 +9,13 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -56,22 +54,15 @@ const App = () => {
     setUser(null)
   }
 
-  const handleNewBlog = async event => {
-    event.preventDefault()
+  const handleNewBlog = async newBlog => {
     try {
-      const newBlog = await blogService.create({
-        title,
-        author,
-        url
-      })
-      setBlogs(blogs.concat(newBlog))
+      const newBlogReponse = await blogService.create(newBlog)
+      console.log(newBlogReponse)
+      setBlogs(blogs.concat(newBlogReponse))
       setSuccessMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     } catch (exception) {
       setErrorMessage('Something has gone wrong. Please try posting again.')
       setTimeout(() => {
@@ -80,70 +71,38 @@ const App = () => {
     }
   }
 
-  const loginForm = () => {
-    return (
-      <>
-        <h2>log in to application</h2>
-        <h3 style={{color: 'red'}}>{errorMessage}</h3>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input 
-              type="text" 
-              name="Username"
-              value={username}
-              onChange={({target}) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input 
-              type="password"
-              name="Password"
-              value={password}
-              onChange={({target}) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </>
-    )
+  const handleUpdateBlog = async (updatedBlog, blogId) => {
+    try {
+      const updatedBlogResponse = await blogService.update(updatedBlog, blogId)
+      console.log(updatedBlogResponse)
+      setBlogs(blogs.map(blog => blog.id !== blogId ? blog : updatedBlogResponse))
+    } catch (exception) {
+      setErrorMessage('Could not update. Please try posting again.')
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000)
+    }
   }
-
-  const blogsForm = () => {
-    return (
-      <>
-        <h2>blogs</h2>
-        <h3 style={{color: 'red'}}>{errorMessage}</h3>
-        <h3 style={{color: 'green'}}>{successMessage}</h3>
-        <div>
-          {user.name} has logged in
-          <button onClick={handleLogout}>logout</button>
-        </div>
-        <br/>
-        <h2>create new</h2>
-        <form onSubmit={handleNewBlog}>
-          <div>
-            title: <input type="text" value={title} onChange={({target}) => setTitle(target.value)}/>
-          </div>
-          <div>
-            author: <input type="text" value={author} onChange={({target}) => setAuthor(target.value)}/>
-          </div>
-          <div>
-            url: <input type="text" value={url} onChange={({target}) => setUrl(target.value)}/>
-          </div>
-          <button type="submit">create</button>
-        </form>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
-      </>
-    )
-  }
-
   return (
     <div>
-      {user ? blogsForm() : loginForm()}
+      {user ? 
+        <BlogForm
+          errorMessage={errorMessage}
+          successMessage={successMessage}
+          handleLogout={handleLogout}
+          handleNewBlog={handleNewBlog}
+          blogs={blogs}
+          user={user}
+          handleUpdateBlog={handleUpdateBlog}
+        /> : <LoginForm
+            errorMessage={errorMessage}
+            handleLogin={handleLogin}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+          />
+        }
     </div>
   )
 }
