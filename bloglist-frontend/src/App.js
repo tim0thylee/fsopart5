@@ -104,7 +104,7 @@ const App = () => {
 
   return (
     <div>
-      {user ? 
+      {user ?
         <BlogForm
           errorMessage={errorMessage}
           successMessage={successMessage}
@@ -115,14 +115,14 @@ const App = () => {
           handleUpdateBlog={handleUpdateBlog}
           handleDelete={handleDelete}
         /> : <LoginForm
-            errorMessage={errorMessage}
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-          />
-        }
+          errorMessage={errorMessage}
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
+      }
     </div>
   )
 }

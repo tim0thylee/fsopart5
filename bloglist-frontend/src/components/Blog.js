@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+/* eslint-disable linebreak-style */
+import React, { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, username, handleDelete }) => {
   const [showDetail, setShowDetail] = useState(false)
@@ -10,6 +11,7 @@ const Blog = ({ blog, updateBlog, username, handleDelete }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
   const handleUpdateLikes = (event) => {
     const updatedBlog = {
       title: blog.title,
@@ -21,7 +23,8 @@ const Blog = ({ blog, updateBlog, username, handleDelete }) => {
     updateBlog(event, updatedBlog, blog.id)
   }
 
-  const handleDeleteButton = (event) => {
+  // eslint-disable-next-line no-unused-vars
+  const handleDeleteButton = event => {
     handleDelete(blog.id, blog)
   }
 
@@ -29,7 +32,7 @@ const Blog = ({ blog, updateBlog, username, handleDelete }) => {
     <div style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={() => setShowDetail(!showDetail)}>view</button>
-      {showDetail ? 
+      {showDetail ?
         <>
           <div>{blog.url}</div>
           <div>
@@ -41,6 +44,6 @@ const Blog = ({ blog, updateBlog, username, handleDelete }) => {
         </> : null
       }
     </div>
-)}
+  )}
 
 export default Blog
