@@ -8,6 +8,7 @@ const BlogsForm = ({
     handleLogout,
     handleNewBlog,
     handleUpdateBlog,
+    handleDelete,
     user,
     blogs
 }) => {
@@ -57,8 +58,14 @@ const BlogsForm = ({
             <button type="submit">create</button>
             </form>
         </Toggable>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            updateBlog={updateBlog} 
+            username={user.username}
+            handleDelete={handleDelete}
+            />
         )}
       </>
     )

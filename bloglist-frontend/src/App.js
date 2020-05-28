@@ -74,7 +74,6 @@ const App = () => {
   const handleUpdateBlog = async (updatedBlog, blogId) => {
     try {
       const updatedBlogResponse = await blogService.update(updatedBlog, blogId)
-      console.log(updatedBlogResponse)
       setBlogs(blogs.map(blog => blog.id !== blogId ? blog : updatedBlogResponse))
     } catch (exception) {
       setErrorMessage('Could not update. Please try posting again.')
@@ -83,6 +82,26 @@ const App = () => {
       }, 5000)
     }
   }
+
+  const handleDelete = async (blogId, blog) => {
+    try {
+      const confirmDelete = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+      if (confirmDelete) {
+        await blogService.deleteBlog(blogId)
+        setBlogs(blogs.filter(blog => blog.id !== blogId))
+        setSuccessMessage('Blog was successfully deleted.')
+        setTimeout(() => {
+          setSuccessMessage('')
+        }, 5000)
+      }
+    } catch (exception) {
+      setErrorMessage('Could not delete. Please refresh and try again.')
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       {user ? 
@@ -94,6 +113,7 @@ const App = () => {
           blogs={blogs}
           user={user}
           handleUpdateBlog={handleUpdateBlog}
+          handleDelete={handleDelete}
         /> : <LoginForm
             errorMessage={errorMessage}
             handleLogin={handleLogin}

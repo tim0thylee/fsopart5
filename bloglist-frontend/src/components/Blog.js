@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-import blogs from '../services/blogs'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, username, handleDelete }) => {
   const [showDetail, setShowDetail] = useState(false)
 
   const blogStyle = {
@@ -11,7 +10,6 @@ const Blog = ({ blog, updateBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
   const handleUpdateLikes = (event) => {
     const updatedBlog = {
       title: blog.title,
@@ -21,6 +19,10 @@ const Blog = ({ blog, updateBlog }) => {
       user: blog.user.id
     }
     updateBlog(event, updatedBlog, blog.id)
+  }
+
+  const handleDeleteButton = (event) => {
+    handleDelete(blog.id, blog)
   }
 
   return (
@@ -35,6 +37,7 @@ const Blog = ({ blog, updateBlog }) => {
             <button onClick={handleUpdateLikes}>like</button>
           </div>
           <div>{blog.user.name}</div>
+          {username === blog.user.username ? <button onClick={handleDeleteButton}>remove</button> : null}
         </> : null
       }
     </div>
