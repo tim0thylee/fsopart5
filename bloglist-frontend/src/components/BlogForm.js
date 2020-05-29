@@ -35,7 +35,7 @@ const BlogsForm = ({
   }
 
   return (
-    <>
+    <div className="formDiv">
       <h2>blogs</h2>
       <h3 style={{ color: 'red' }}>{errorMessage}</h3>
       <h3 style={{ color: 'green' }}>{successMessage}</h3>
@@ -46,15 +46,15 @@ const BlogsForm = ({
       <br/>
       <Toggable buttonLabel='new blog'>
         <h2>create new</h2>
-        <form onSubmit={createNewBlog}>
+        <form onSubmit={createNewBlog} >
           <div>
-                title: <input type="text" value={title} onChange={({ target }) => setTitle(target.value)}/>
+                title: <input type="text" value={title} onChange={({ target }) => setTitle(target.value)} id="title"/>
           </div>
           <div>
-                author: <input type="text" value={author} onChange={({ target }) => setAuthor(target.value)}/>
+                author: <input type="text" value={author} onChange={({ target }) => setAuthor(target.value)} id="author"/>
           </div>
           <div>
-                url: <input type="text" value={url} onChange={({ target }) => setUrl(target.value)}/>
+                url: <input type="text" value={url} onChange={({ target }) => setUrl(target.value)} id="url"/>
           </div>
           <button type="submit">create</button>
         </form>
@@ -68,7 +68,7 @@ const BlogsForm = ({
           handleDelete={handleDelete}
         />
       )}
-    </>
+    </div>
   )
 }
 
