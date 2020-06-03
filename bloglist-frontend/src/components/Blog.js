@@ -37,10 +37,10 @@ const Blog = ({ blog, updateBlog, username, handleDelete }) => {
           <div>{blog.url}</div>
           <div>
             likes {blog.likes}
-            <button onClick={handleUpdateLikes}>like</button>
+            <button onClick={handleUpdateLikes} className='likeButton'>like</button>
           </div>
           <div>{blog.user.name}</div>
-          {username === blog.user.username ? <button onClick={handleDeleteButton}>remove</button> : null}
+          {username === blog.user.username ? <button onClick={handleDeleteButton} className="removeButton">remove</button> : null}
         </> : null
       }
     </div>

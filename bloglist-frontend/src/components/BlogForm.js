@@ -56,7 +56,7 @@ const BlogsForm = ({
           <div>
                 url: <input type="text" value={url} onChange={({ target }) => setUrl(target.value)} id="url"/>
           </div>
-          <button type="submit">create</button>
+          <button type="submit" id="createButton">create</button>
         </form>
       </Toggable>
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>

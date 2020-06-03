@@ -57,12 +57,13 @@ const App = () => {
   const handleNewBlog = async newBlog => {
     try {
       const newBlogReponse = await blogService.create(newBlog)
-      console.log(newBlogReponse)
-      setBlogs(blogs.concat(newBlogReponse))
       setSuccessMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
+      blogService.getAll().then(blogs =>
+        setBlogs( blogs )
+      )
     } catch (exception) {
       setErrorMessage('Something has gone wrong. Please try posting again.')
       setTimeout(() => {
